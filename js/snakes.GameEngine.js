@@ -1,7 +1,6 @@
 var snakes = snakes || {};
 
-snakes.GameEngine = function(canvas, gameInfoElement, endGameCallback) {
-
+snakes.GameEngine = function (canvas, gameInfoElement, endGameCallback) {
 	var self = {};
 
 	// private:
@@ -11,57 +10,57 @@ snakes.GameEngine = function(canvas, gameInfoElement, endGameCallback) {
 	var isPause = false;
 	var gameHasFinished = false;
 
-	var render = function() {
-    	/* перерисовываем змею и яблоко */
+	var render = function () {
+		/* перерисовываем змею и яблоко */
 
 		renderGameInfo();
 
-    	canvas.clear();
-    	for (var i = 0; i < model.snake.length; i++) {
-    		var coord = model.snake[i];
+		canvas.clear();
+		for (var i = 0; i < model.snake.length; i++) {
+			var coord = model.snake[i];
 			var color = 'red';
-    		if(i == 0) {
-    			color = 'blue';
-    		}
+			if (i == 0) {
+				color = 'blue';
+			}
 			addRect(coord.y * snakes.common.CAGE_SIZE, coord.x * snakes.common.CAGE_SIZE, color);
-    	}
+		}
 		addCircle(model.apple.y * snakes.common.CAGE_SIZE, model.apple.x * snakes.common.CAGE_SIZE, 'green');
 	};
 
-	var renderGameInfo = function() {
+	var renderGameInfo = function () {
 		var text = "Яблоки: " + model.apples;
 		text += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Скорость: " + (speedIndex + 1);
-		if(isPause) {
+		if (isPause) {
 			text += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Пауза";
 		}
 		$(gameInfoElement).empty();
-    	$(gameInfoElement).append("<span style='font-size:1.5em;'>" + text + "</span>");
+		$(gameInfoElement).append("<span style='font-size:1.5em;'>" + text + "</span>");
 	}
 
-	var addRect = function(left, top, color) {
+	var addRect = function (left, top, color) {
 		var rect = new fabric.Rect({
-		 	left: left,
+			left: left,
 			top: top,
 			fill: color,
 			width: snakes.common.CAGE_SIZE,
 			height: snakes.common.CAGE_SIZE
 		});
-		canvas.add(rect);		
+		canvas.add(rect);
 	};
 
-	var addCircle = function(left, top, color) {
+	var addCircle = function (left, top, color) {
 		var circle = new fabric.Circle({
 			radius: snakes.common.CAGE_SIZE / 2, fill: color, left: left, top: top
-		  });
+		});
 
 		canvas.add(circle);
 	};
 
-	var changeModelForNextStep = function() {
+	var changeModelForNextStep = function () {
 		var head = model.snake[0];
 		var newHead = generateNewHead(head);
 
-		if(isBarrier(newHead)) {
+		if (isBarrier(newHead)) {
 			gameHasFinished = true;
 			clearInterval(movingIntervalId);
 			endGameCallback();
@@ -69,7 +68,7 @@ snakes.GameEngine = function(canvas, gameInfoElement, endGameCallback) {
 
 		model.snake.unshift(newHead);
 
-		if(head.x == model.apple.x && head.y == model.apple.y) {
+		if (head.x == model.apple.x && head.y == model.apple.y) {
 			model.apples++;
 			generateNextApple();
 		} else {
@@ -77,53 +76,53 @@ snakes.GameEngine = function(canvas, gameInfoElement, endGameCallback) {
 		}
 	};
 
-	var recreateMovingTimer = function() {
+	var recreateMovingTimer = function () {
 		clearInterval(movingIntervalId);
 		movingIntervalId = setInterval(nextStep, speeds[speedIndex]);
 	}
 
-	var isBarrier = function(newHead) {
+	var isBarrier = function (newHead) {
 		// если стена или тело
-		return newHead.x >= snakes.common.COUNT_H || 
-			newHead.x < 0 || 
-			newHead.y >= snakes.common.COUNT_W || 
+		return newHead.x >= snakes.common.COUNT_H ||
+			newHead.x < 0 ||
+			newHead.y >= snakes.common.COUNT_W ||
 			newHead.y < 0 ||
 			coordInBody(newHead);
 	};
 
-	var generateNewHead = function(head) {
+	var generateNewHead = function (head) {
 		var newHead = { x: head.x, y: head.y };
 
-		if(model.currentDestination == snakes.common.DEST_UP) {
+		if (model.currentDestination == snakes.common.DEST_UP) {
 			newHead.x--;
-		} else if(model.currentDestination == snakes.common.DEST_DOWN) {
+		} else if (model.currentDestination == snakes.common.DEST_DOWN) {
 			newHead.x++;
-		} else if(model.currentDestination == snakes.common.DEST_LEFT) {
+		} else if (model.currentDestination == snakes.common.DEST_LEFT) {
 			newHead.y--;
-		} else if(model.currentDestination == snakes.common.DEST_RIGHT) {
+		} else if (model.currentDestination == snakes.common.DEST_RIGHT) {
 			newHead.y++;
 		}
 
 		return newHead;
 	};
 
-	var generateNextApple = function() {
+	var generateNextApple = function () {
 		do {
 			model.apple.x = snakes.common.getRandomInt(0, snakes.common.COUNT_H - 1);
 			model.apple.y = snakes.common.getRandomInt(0, snakes.common.COUNT_W - 1);
-		} while(coordInBody(model.apple)) /* генерим до тех пор, пока координаты попадают на тело змеи */
+		} while (coordInBody(model.apple)) /* генерим до тех пор, пока координаты попадают на тело змеи */
 	};
 
-	var coordInBody = function(coord) {
-		for(var i = 0; i < model.snake.length; i++) {
-			if(model.snake[i].x == coord.x && model.snake[i].y == coord.y) {
+	var coordInBody = function (coord) {
+		for (var i = 0; i < model.snake.length; i++) {
+			if (model.snake[i].x == coord.x && model.snake[i].y == coord.y) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	var nextStep = function() {
+	var nextStep = function () {
 		changeModelForNextStep();
 		render();
 	}
@@ -132,58 +131,58 @@ snakes.GameEngine = function(canvas, gameInfoElement, endGameCallback) {
 
 
 	// public:
-	self.start = function() {
+	self.start = function () {
 		render();
 		movingIntervalId = setInterval(nextStep, speeds[speedIndex]);
 	}
 
-	self.moveUp = function() {
-		if(isPause || gameHasFinished) {
+	self.moveUp = function () {
+		if (isPause || gameHasFinished) {
 			return;
 		}
 
-		if(model.currentDestination != snakes.common.DEST_DOWN) {
+		if (model.currentDestination != snakes.common.DEST_DOWN) {
 			model.currentDestination = snakes.common.DEST_UP;
 		}
 	}
 
-	self.moveDown = function() {
-		if(isPause || gameHasFinished) {
+	self.moveDown = function () {
+		if (isPause || gameHasFinished) {
 			return;
 		}
 
-		if(model.currentDestination != snakes.common.DEST_UP) {
+		if (model.currentDestination != snakes.common.DEST_UP) {
 			model.currentDestination = snakes.common.DEST_DOWN;
 		}
 	}
 
-	self.moveLeft = function() {
-		if(isPause || gameHasFinished) {
+	self.moveLeft = function () {
+		if (isPause || gameHasFinished) {
 			return;
 		}
 
-		if(model.currentDestination != snakes.common.DEST_RIGHT) {
+		if (model.currentDestination != snakes.common.DEST_RIGHT) {
 			model.currentDestination = snakes.common.DEST_LEFT;
 		}
 	}
 
-	self.moveRight = function() {
-		if(isPause || gameHasFinished) {
+	self.moveRight = function () {
+		if (isPause || gameHasFinished) {
 			return;
 		}
 
-		if(model.currentDestination != snakes.common.DEST_LEFT) {
+		if (model.currentDestination != snakes.common.DEST_LEFT) {
 			model.currentDestination = snakes.common.DEST_RIGHT;
 		}
 	}
 
-	self.switchImprovementSpeedMode = function() {
+	self.switchImprovementSpeedMode = function () {
 
-		if(isPause || gameHasFinished) {
+		if (isPause || gameHasFinished) {
 			return;
 		}
 
-		if(speedIndex != speeds.length - 1) {
+		if (speedIndex != speeds.length - 1) {
 			speedIndex++;
 		} else {
 			speedIndex = 0;
@@ -191,13 +190,13 @@ snakes.GameEngine = function(canvas, gameInfoElement, endGameCallback) {
 		recreateMovingTimer();
 	}
 
-	self.pauseOrContinue = function() {
+	self.pauseOrContinue = function () {
 
-		if(gameHasFinished) {
+		if (gameHasFinished) {
 			return;
 		}
 
-		if(!isPause) {
+		if (!isPause) {
 			clearInterval(movingIntervalId);
 		} else {
 			movingIntervalId = setInterval(nextStep, speeds[speedIndex]);

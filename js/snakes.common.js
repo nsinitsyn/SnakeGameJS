@@ -1,7 +1,6 @@
 var snakes = snakes || {};
 
 snakes.common = (function ($) {
-
 	return {
 		COUNT_W: 60,
 		COUNT_H: 50,
@@ -12,8 +11,8 @@ snakes.common = (function ($) {
 		DEST_LEFT: 3,
 		DEST_RIGHT: 4,
 
-		getRandomInt: function(min, max) {
-		  return Math.floor(Math.random() * (max - min + 1)) + min;
+		getRandomInt: function (min, max) {
+			return Math.floor(Math.random() * (max - min + 1)) + min;
 		}
 	};
 

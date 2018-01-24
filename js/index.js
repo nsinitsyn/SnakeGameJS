@@ -1,7 +1,7 @@
 $(function () {
 	var canvas = new fabric.Canvas('gCanvas');
 
-	var game = new snakes.GameEngine(canvas, $("#applesText:first"), function() {
+	var game = new snakes.GameEngine(canvas, $("#applesText:first"), function () {
 		//alert("Game over");
 	});
 	game.start();
@@ -15,11 +15,11 @@ $(function () {
 		32: game.switchImprovementSpeedMode
 	};
 
-	$(document).keydown(function(e) {
+	$(document).keydown(function (e) {
 		var action = keyCodeActions[e.keyCode];
-		if(action != undefined) {
+		if (action != undefined) {
 			action();
 			return false;
 		}
-	});		
+	});
 });
