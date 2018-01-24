@@ -3,7 +3,7 @@ var snakes = snakes || {};
 snakes.GameEngine = function (canvas, gameInfoElement, endGameCallback) {
 	var self = {};
 
-	// private:
+	// private
 	var movingIntervalId;
 	var speedIndex = 0;
 	var speeds = [100, 80, 50, 30, 15];
@@ -11,7 +11,7 @@ snakes.GameEngine = function (canvas, gameInfoElement, endGameCallback) {
 	var gameHasFinished = false;
 
 	var render = function () {
-		/* перерисовываем змею и яблоко */
+		/* rerender snake and apple */
 
 		renderGameInfo();
 
@@ -82,7 +82,7 @@ snakes.GameEngine = function (canvas, gameInfoElement, endGameCallback) {
 	}
 
 	var isBarrier = function (newHead) {
-		// если стена или тело
+		// if wall or snake body
 		return newHead.x >= snakes.common.COUNT_H ||
 			newHead.x < 0 ||
 			newHead.y >= snakes.common.COUNT_W ||
@@ -110,7 +110,7 @@ snakes.GameEngine = function (canvas, gameInfoElement, endGameCallback) {
 		do {
 			model.apple.x = snakes.common.getRandomInt(0, snakes.common.COUNT_H - 1);
 			model.apple.y = snakes.common.getRandomInt(0, snakes.common.COUNT_W - 1);
-		} while (coordInBody(model.apple)) /* генерим до тех пор, пока координаты попадают на тело змеи */
+		} while (coordInBody(model.apple)) /* generate until then point is on snake body  */
 	};
 
 	var coordInBody = function (coord) {
@@ -129,8 +129,7 @@ snakes.GameEngine = function (canvas, gameInfoElement, endGameCallback) {
 
 	var model = new snakes.models.GameModel();
 
-
-	// public:
+	// public
 	self.start = function () {
 		render();
 		movingIntervalId = setInterval(nextStep, speeds[speedIndex]);
@@ -177,7 +176,6 @@ snakes.GameEngine = function (canvas, gameInfoElement, endGameCallback) {
 	}
 
 	self.switchImprovementSpeedMode = function () {
-
 		if (isPause || gameHasFinished) {
 			return;
 		}
@@ -191,7 +189,6 @@ snakes.GameEngine = function (canvas, gameInfoElement, endGameCallback) {
 	}
 
 	self.pauseOrContinue = function () {
-
 		if (gameHasFinished) {
 			return;
 		}
