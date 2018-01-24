@@ -25,7 +25,7 @@ snakes.GameEngine = function(canvas, gameInfoElement, endGameCallback) {
     		}
 			addRect(coord.y * snakes.common.CAGE_SIZE, coord.x * snakes.common.CAGE_SIZE, color);
     	}
-		addRect(model.apple.y * snakes.common.CAGE_SIZE, model.apple.x * snakes.common.CAGE_SIZE, 'green');
+		addCircle(model.apple.y * snakes.common.CAGE_SIZE, model.apple.x * snakes.common.CAGE_SIZE, 'green');
 	};
 
 	var renderGameInfo = function() {
@@ -38,7 +38,7 @@ snakes.GameEngine = function(canvas, gameInfoElement, endGameCallback) {
     	$(gameInfoElement).append("<span style='font-size:1.5em;'>" + text + "</span>");
 	}
 
-	var addRect = function(left, top, color, width, height) {
+	var addRect = function(left, top, color) {
 		var rect = new fabric.Rect({
 		 	left: left,
 			top: top,
@@ -46,7 +46,15 @@ snakes.GameEngine = function(canvas, gameInfoElement, endGameCallback) {
 			width: snakes.common.CAGE_SIZE,
 			height: snakes.common.CAGE_SIZE
 		});
-		canvas.add(rect);
+		canvas.add(rect);		
+	};
+
+	var addCircle = function(left, top, color) {
+		var circle = new fabric.Circle({
+			radius: snakes.common.CAGE_SIZE / 2, fill: color, left: left, top: top
+		  });
+
+		canvas.add(circle);
 	};
 
 	var changeModelForNextStep = function() {
