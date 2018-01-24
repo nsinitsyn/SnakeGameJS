@@ -28,10 +28,10 @@ snakes.GameEngine = function (canvas, gameInfoElement, endGameCallback) {
 	};
 
 	var renderGameInfo = function () {
-		var text = "Яблоки: " + model.apples;
-		text += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Скорость: " + (speedIndex + 1);
+		var text = "Apples: " + model.apples;
+		text += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Speed: " + (speedIndex + 1);
 		if (isPause) {
-			text += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Пауза";
+			text += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pause";
 		}
 		$(gameInfoElement).empty();
 		$(gameInfoElement).append("<span style='font-size:1.5em;'>" + text + "</span>");
