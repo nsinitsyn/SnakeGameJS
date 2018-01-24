@@ -1,3 +1,14 @@
 #gCanvas {
 	border: 1px solid black;
 }
+
+.canvas-block {
+	float: left;
+}
+
+.management-panel {
+	float: left; 
+	font-size: 1.5em; 
+	margin-top: 25px;
+	margin-left: 20px;
+}

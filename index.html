@@ -14,14 +14,18 @@
 	<link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-	
-	<div id="applesText"></div>
-	<canvas id="gCanvas" width="600" height="500"></canvas> 
+	<div class="canvas-block">
+		<div id="applesText"></div>
+		<canvas id="gCanvas" width="600" height="500"></canvas> 
+	</div>
+	<div class="management-panel">
+		<div style="font-weight:bold;">УПРАВЛЕНИЕ</div>
+		<div>Пробел - Следующая скорость</div>
+		<div>Shift - Пауза</div>
+	</div>
 
 	<!-- libs scripts -->
 	<script type="text/javascript" src="libs/jquery/jquery-2.1.0.js"></script>
-	<script type="text/javascript" src="libs/bootstrap/js/bootstrap.js"></script>
-	<script type='text/javascript' src='libs/knockout/knockout-3.0.0.js'></script>
 	<script type='text/javascript' src='libs/fabric.js-1.4.7/dist/fabric.js'></script>
 
 	<!-- project scripts -->

@@ -1,8 +1,7 @@
 $(function () {
-
 	var canvas = new fabric.Canvas('gCanvas');
 
-	var game = new snakes.GameEngine(canvas, $("#applesText")[0], function() {
+	var game = new snakes.GameEngine(canvas, $("#applesText:first"), function() {
 		//alert("Game over");
 	});
 	game.start();
@@ -15,9 +14,6 @@ $(function () {
 		16: game.pauseOrContinue,
 		32: game.switchImprovementSpeedMode
 	};
-
-	// Shift 16
-	// Пробел 32
 
 	$(document).keydown(function(e) {
 		var action = keyCodeActions[e.keyCode];

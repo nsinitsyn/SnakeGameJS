@@ -7,11 +7,9 @@ snakes.GameEngine = function(canvas, gameInfoElement, endGameCallback) {
 	// private:
 	var movingIntervalId;
 	var speedIndex = 0;
-	var speeds = [100, 80, 50, 30];
-	var applesForIncrementSpeed = [5, 10, 15];
+	var speeds = [100, 80, 50, 30, 15];
 	var isPause = false;
 	var gameHasFinished = false;
-	var isImprovementSpeedMode = false;
 
 	var render = function() {
     	/* перерисовываем змею и яблоко */
@@ -31,7 +29,8 @@ snakes.GameEngine = function(canvas, gameInfoElement, endGameCallback) {
 	};
 
 	var renderGameInfo = function() {
-		var text = "Apples: " + model.apples;
+		var text = "Яблоки: " + model.apples;
+		text += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Скорость: " + (speedIndex + 1);
 		if(isPause) {
 			text += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Пауза";
 		}
@@ -51,7 +50,6 @@ snakes.GameEngine = function(canvas, gameInfoElement, endGameCallback) {
 	};
 
 	var changeModelForNextStep = function() {
-
 		var head = model.snake[0];
 		var newHead = generateNewHead(head);
 
@@ -65,24 +63,11 @@ snakes.GameEngine = function(canvas, gameInfoElement, endGameCallback) {
 
 		if(head.x == model.apple.x && head.y == model.apple.y) {
 			model.apples++;
-			incrementSpeedIfNeed();
 			generateNextApple();
 		} else {
 			model.snake.pop();
 		}
 	};
-
-	var incrementSpeedIfNeed = function() {
-		if(speedIndex == speeds.length - 1) {
-			return;
-		}
-
-		var needApples = applesForIncrementSpeed[speedIndex];
-		if(model.apples == needApples) {
-			speedIndex++;
-			recreateMovingTimer();
-		}
-	}
 
 	var recreateMovingTimer = function() {
 		clearInterval(movingIntervalId);
@@ -185,13 +170,17 @@ snakes.GameEngine = function(canvas, gameInfoElement, endGameCallback) {
 	}
 
 	self.switchImprovementSpeedMode = function() {
-		clearInterval(movingIntervalId);
-		if(isImprovementSpeedMode) {
-			movingIntervalId = setInterval(nextStep, speeds[speedIndex]);
-		} else {
-			movingIntervalId = setInterval(nextStep, speeds[speedIndex] / 2);
+
+		if(isPause || gameHasFinished) {
+			return;
 		}
-		isImprovementSpeedMode = !isImprovementSpeedMode;
+
+		if(speedIndex != speeds.length - 1) {
+			speedIndex++;
+		} else {
+			speedIndex = 0;
+		}
+		recreateMovingTimer();
 	}
 
 	self.pauseOrContinue = function() {
